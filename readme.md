@@ -23,8 +23,8 @@
  
  When it comes to making software for casinos, I always try to start with the smallest unit possible. In this case it would 
  have expanded the project massively. So I decided to stay with the smaller scale solution. 
- Everthing is located in **App\Services\GameWebService**
- I made 3 general classes:
+ Everthing is located in **App\Services\GameWebService.**
+ <br>I made 3 general classes:
  
  * `RegularSlotGame` - written under the `GameType` interface. Its the game itself and contains properties only describing 
  the general rules to the game. It can be extended or similar games can be added the same way. It has only 2 required methods
