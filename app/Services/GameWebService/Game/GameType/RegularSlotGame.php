@@ -39,30 +39,30 @@ class RegularSlotGame implements GameTypeInterface
     protected $payLines = [
 
         // First line
-       ['lineNumber' => 1, 'winningSymbolPositions' => [0,3,6], 'payout' => 0.20],
-       ['lineNumber' => 1, 'winningSymbolPositions' => [0,3,6,9], 'payout' => 2],
-       ['lineNumber' => 1, 'winningSymbolPositions' => [0,3,6,9,12],  'payout' => 10],
+       ['lineNumber' => 1, 'winningSymbolPositions' => [0,3,6,9,12]],
 
         // Second line
-        ['lineNumber' => 2, 'winningSymbolPositions' => [1,4,7], 'payout' => 0.20],
-        ['lineNumber' => 2, 'winningSymbolPositions' => [1,4,7,10], 'payout' => 2],
-        ['lineNumber' => 2, 'winningSymbolPositions' => [1,4,7,10,13], 'payout' => 10],
+        ['lineNumber' => 2, 'winningSymbolPositions' => [1,4,7,10,13]],
 
         // Third line
-        ['lineNumber' => 3, 'winningSymbolPositions' => [2,5,8], 'payout' => 0.20],
-        ['lineNumber' => 3, 'winningSymbolPositions' => [2,5,8,11], 'payout' => 2],
-        ['lineNumber' => 3, 'winningSymbolPositions' => [2,5,8,11,14],  'payout' => 10],
+        ['lineNumber' => 3, 'winningSymbolPositions' => [2,5,8,11,14]],
 
         // Fourth line
-        ['lineNumber' => 4, 'winningSymbolPositions' => [0,4,8], 'payout' => 0.20],
-        ['lineNumber' => 4, 'winningSymbolPositions' => [4,4,8,10], 'payout' => 2],
-        ['lineNumber' => 4, 'winningSymbolPositions' => [4,4,8,10,12],  'payout' => 10],
+        ['lineNumber' => 4, 'winningSymbolPositions' => [0,4,8,10,12]],
 
-        // First line
-        ['lineNumber' => 5, 'winningSymbolPositions' => [2,4,6], 'payout' => 0.20],
-        ['lineNumber' => 5, 'winningSymbolPositions' => [2,4,6,10], 'payout' => 2],
-        ['lineNumber' => 5, 'winningSymbolPositions' => [2,4,6,10,14],  'payout' => 10],
+        // Fifth line
+        ['lineNumber' => 5, 'winningSymbolPositions' => [2,4,6,10,14]],
 
+    ];
+
+    /**
+     * Payouts per symbol count
+     * @var array
+     */
+    protected $payouts = [
+      3 => 0.2,
+      4 => 2,
+      5 => 10
     ];
 
 
@@ -167,7 +167,7 @@ class RegularSlotGame implements GameTypeInterface
 
 
     /**
-     * @return GameRoundResult
+     * @return GameResultInterface
      * @throws RoundResultsMissingException
      */
     public function getRoundResults() : GameResultInterface
@@ -195,12 +195,12 @@ class RegularSlotGame implements GameTypeInterface
               if ($previousSymbol != $nextSymbol) {
                 break;
               }
+          }
 
-              // If the code is executed this far. The cycle has not been broken. So the line has won. This was the last
-              // iteration and all the symbols matched
-              if ($i == count($payLine['winningSymbolPositions']) -1) {
-                  $this->roundResult->setPayLine($payLine['lineNumber'], $payLine);
-              }
+          // If the payout is in the payout array, mark as a winning line
+          if (isset($this->payouts[$i])) {
+              $payLine['payout'] = $this->payouts[$i];
+              $this->roundResult->setPayLine($payLine['lineNumber'], $payLine);
           }
         }
 
